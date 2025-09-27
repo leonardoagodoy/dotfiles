@@ -1,0 +1,97 @@
+/* Definindo as cores */
+* {
+    font: "RobotoMono Nerd Font Mono 12";
+    text:     #ffffff;
+    text-alt: #525252;
+
+    inputbar-color: #202020;
+    listview-color: #0F0F0F;
+    accent-color:   #EE5396;
+
+    position: center;
+    background-color: transparent;
+}
+
+/* Estilo da janela */
+window {
+    width: 666;
+}
+
+mainbox {
+    background-color: @inputbar-color;
+}
+
+prompt, entry, element-icon, element-text {
+    vertical-align: 0.5;
+}
+
+prompt {
+    enabled: true;
+    text: "";
+    text-color: #fff;
+    
+          /* top right down left */
+    padding: 15px 15px 15px 25px;
+    text-color: @accent-color;
+    background-color: @inputbar-color;
+}
+
+prompt {
+    enabled: true;
+    text-color: @accent-color;
+    font: "RobotoMono Nerd Font Mono 15";
+}
+
+entry {
+    text-color: #fff;
+    background-color: @inputbar-color;
+}
+
+#ns {
+    background-color: #ff0000;
+}
+
+message {
+  background-color: #161616;
+}
+
+textbox {
+  text-color: @accent-color;
+}
+
+listview {
+    fixed-height: true;
+    padding: 8px;
+    background-color: @listview-color;
+}
+
+element-text selected, element-icon selected, element-text selected, inputbar {
+    background-color: @inputbar-color;
+}
+
+element, element-icon, element-text {
+    padding: 1px;
+    text-color: @text;
+    background-color: @listview-color;
+    highlight: none; /* remove underline on match highlight */
+}
+
+element-icon {
+    padding: 0px 5px 0px 8px;
+}
+
+element-text {
+    text-color: @text-alt;
+}
+
+element-text selected {
+    text-color: @text;
+}
+
+element selected {
+    spacing: 5px;
+    margin: 2px;
+    background-color: @inputbar-color;
+}
+
+

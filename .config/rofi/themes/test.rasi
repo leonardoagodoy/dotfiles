@@ -1,0 +1,17 @@
+* {
+    background: #1e1e2e;
+    foreground: #cdd6f4;
+}
+
+window {
+    children: [ title, inputbar, listview ];
+}
+
+title {
+    text: "Meu Título";
+    expand: false;
+    horizontal-align: 0.5;
+    font: "RobotoMono Nerd Font Mono 16";
+    padding: 6px;
+}
+

@@ -1,0 +1,24 @@
+@import "config"
+
+listview {
+  columns:       9;
+  lines:         7;
+  cycle:         true;
+  dynamic:       true;
+  layout:        vertical;
+  flow:          horizontal;
+  reverse:       false;
+  fixed-height:  true;
+  fixed-columns: true;
+}
+
+element {
+  orientation: vertical;
+}
+
+element-text {
+  vertical-align:   0.8;
+  horizontal-align: 0.5;
+  font:            "RobotoMono Nerd Font Mono 24";
+}
+

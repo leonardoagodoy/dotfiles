@@ -1,0 +1,10 @@
+//@theme "~/.config/rofi/themes/flat-minimalist.rasi"
+
+configuration {
+  show-icons: true;
+
+  kb-move-char-back: "";
+  kb-move-char-forward: "";
+}
+
+@theme "/home/meki/.config/rofi/themes/meggers.rasi"
