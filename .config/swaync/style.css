@@ -1,0 +1,77 @@
+* {
+    font-family: monospace;
+    font-size: 13px;
+    border-radius: 0px;
+}
+
+.control-center {
+    background: #222222;
+    opacity: 1;
+}
+
+/* remove QUALQUER arredondamento global */
+.notification,
+.notification-content,
+.notification-action,
+.notification-row,
+.control-center {
+    border-radius: 0px;
+}
+
+/* notificação principal */
+.notification {
+    background: #222222;
+    border: 1px solid #444444;
+    padding: 10px;
+    box-shadow: none;
+}
+
+/* remove sombra */
+.notification-row {
+    box-shadow: none;
+    margin: 6px 12px;
+}
+
+/* título */
+.summary {
+    font-weight: bold;
+    color: #ffffff;
+}
+
+/* corpo */
+.body {
+    color: #cccccc;
+}
+
+/* remove fundo herdado do GTK */
+.notification-action,
+.notification-action button {
+    all: unset;
+}
+
+/* container das actions */
+.notification-actions {
+    margin-top: 6px;
+}
+
+/* botões */
+.notification-action {
+    background: #333333;
+    border: 1px solid #555555;
+    padding: 4px 8px;
+    margin-top: 6px;
+}
+
+.notification-action:hover {
+    background: #444444;
+}
+
+/* barra de tempo */
+.progress {
+    min-height: 2px;
+}
+
+.progress progress {
+    background: #888888;
+}
+
