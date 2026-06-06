@@ -1,0 +1,80 @@
+#!/usr/bin/env bash
+# Clipboard manager: cliphist + fzf + kitty + feh
+# Deps: cliphist fzf wl-clipboard feh
+
+TMPIMG="/tmp/cliphist-preview.png"
+
+if [[ -z "$KITTY_WINDOW_ID" ]]; then
+  exec kitty \
+    --class cliphist-picker \
+    --override shell=bash \
+    --override close_on_child_death=yes \
+    -- bash -c "$(realpath "$0")"
+fi
+
+# Função interna para gerar o preview (chamada pelo fzf)
+if [[ "$1" == "--preview" ]]; then
+  id="$2"
+  entry=$(cliphist list | grep -P "^${id}\t")
+  if echo "$entry" | grep -qP '^\d+\t\[\[ binary data'; then
+    echo "$entry" | cliphist decode >"$TMPIMG" 2>/dev/null
+    # Mata o feh anterior se houver, e abre o novo em background
+    pkill -f 'feh.*cliphist-preview' 2>/dev/null || true
+    feh --title "cliphist-preview" --geometry 500x450 "$TMPIMG" &
+    echo -e "\n\n   🖼️  Visualizando imagem no feh..."
+  else
+    echo "$entry" | cut -f2-
+  fi
+  exit 0
+fi
+
+# Monta lista marcando imagens reais com ícone
+mapfile -t raw < <(cliphist list)
+
+list=()
+for entry in "${raw[@]}"; do
+  id="${entry%%$'\t'*}"
+  preview="${entry#*$'\t'}"
+  if echo "$entry" | grep -qP '^\d+\t\[\[ binary data'; then
+    list+=("${id}"$'\t'"🖼️  ${preview}")
+  else
+    list+=("$entry")
+  fi
+done
+
+# Função para atualizar a lista mantendo os ícones após deletar
+export -f cliphist
+export TMPIMG
+
+selected=$(
+  printf '%s\n' "${list[@]}" |
+    fzf \
+      --color=fg+:#ee5296,pointer:#ee5296 \
+      --delimiter=$'\t' \
+      --with-nth=2 \
+      --no-preview \
+      --padding=1 \
+      --layout=reverse \
+      --border=none \
+      --prompt="  " \
+      --pointer="▶" \
+      --info="right" \
+      --scrollbar="┃" \
+      --gutter=' ' \
+      --header="Enter: copiar | Alt-d: deletar | Alt-p: Preview Imagem | Esc: sair" \
+      --header-first \
+      --bind='alt-d:execute-silent(echo {} | cliphist delete)+reload(cliphist list)' \
+      --bind="alt-p:execute-silent($(realpath "$0") --preview {1})" \
+      2>/dev/null
+) || true
+
+# Limpeza ao fechar
+pkill -f "feh.*cliphist-preview" 2>/dev/null || true
+rm -f "$TMPIMG"
+
+if [[ -n "$selected" ]]; then
+  id="${selected%%$'\t'*}"
+  original=$(printf '%s\n' "${raw[@]}" | awk -F'\t' -v id="$id" '$1 == id')
+  echo "$original" | cliphist decode | wl-copy
+  notify-send -t 2000 "📋 Copiado" 2>/dev/null || true
+fi

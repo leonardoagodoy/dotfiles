@@ -1,0 +1,3 @@
+#!/bin/bash
+
+kitty --title "Main Menu" bash -c "./scripts/main-menu/mainMenu"

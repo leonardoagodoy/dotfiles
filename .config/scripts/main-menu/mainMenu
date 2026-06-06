@@ -1,0 +1,47 @@
+#!/bin/bash
+
+main_menu() {
+  opcao=$(gum choose \
+    "📦 Pacotes" \
+    "🐳 Docker" \
+    "⚙️ Sistema" \
+    "❌ Sair")
+
+  case "$opcao" in
+    "📦 Pacotes") pacotes_menu ;;
+    "🐳 Docker") docker_menu ;;
+    "⚙️ Sistema") sistema_menu ;;
+    "❌ Sair") exit 0 ;;
+  esac
+}
+
+pacotes_menu() {
+  opcao=$(gum choose \
+    "Instalar" \
+    "Remover" \
+    "⬅ Voltar")
+
+  case "$opcao" in
+    "Instalar") echo "Instalando..." ;;
+    "Remover") echo "Removendo..." ;;
+    "⬅ Voltar") main_menu ;;
+  esac
+}
+
+docker_menu() {
+  opcao=$(gum choose \
+    "Start" \
+    "Stop" \
+    "Logs" \
+    "⬅ Voltar")
+
+  case "$opcao" in
+    "Start") docker start mycontainer ;;
+    "Stop") docker stop mycontainer ;;
+    "Logs") docker logs -f mycontainer ;;
+    "⬅ Voltar") main_menu ;;
+  esac
+}
+
+main_menu
+
