@@ -1,0 +1,11 @@
+#!/bin/bash
+
+echo '
+  █ █ █▀█ █▀▄ █▀█ ▀█▀ █▀▀   █▀▀ █ █ █▀▀ ▀█▀ █▀▀ █▄█
+  █ █ █▀▀ █ █ █▀█  █  █▀▀   ▀▀█  █  ▀▀█  █  █▀▀ █ █
+  ▀▀▀ ▀   ▀▀  ▀ ▀  ▀  ▀▀▀   ▀▀▀  ▀  ▀▀▀  ▀  ▀▀▀ ▀ ▀
+'
+
+echo "--- Starting System Update ---"
+sudo pacman -Syu
+echo "--- Update Complete! ---"

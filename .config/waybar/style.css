@@ -6,12 +6,25 @@
 @define-color base03         #393939;
 @define-color base04         #525252;
 @define-color urgent         #eb4d4b;
+@define-color ok-status      #42BE65;
 
 * {
     /* `otf-font-awesome` is required to be installed for icons */
     /* font-family: FontAwesome, Roboto, Helvetica, Arial, sans-serif; */
     font-family: RobotoMono Nerd Font;
-    font-size: 12px;
+    font-size: 13px;
+}
+
+tooltip {
+    background: #161616;
+    color: #ffffff;
+    border-radius: 0px;
+    border-color: @accent-alt;
+}
+
+#waybar *:hover {
+    background-color: #333333;
+    transition: background-color 0.2s ease;
 }
 
 window#waybar {
@@ -20,6 +33,7 @@ window#waybar {
     color: #ffffff;
     transition-property: background-color;
     transition-duration: .5s;
+    border-radius: 0px;
 }
 
 window#waybar.hidden {
@@ -60,25 +74,24 @@ button:hover {
 }
 
 /* you can set a style on hover for any module like this */
-#pulseaudio:hover {
-    background-color: @base03;
+#workspaces {
+    background-color: @base01;
 }
 
 #workspaces button {
     padding: 0 5px;
     background-color: @base01;
     color: #dde1e6;
-    margin-top: 5px;
-    margin-bottom: 5px;
 }
 
 #workspaces button:hover {
-    background: rgba(0, 0, 0, 0.2);
+    /* background: rgba(10, 0, 0, 0.5); */
 }
 
 #workspaces button.focused {
-    background-color: #00ffff;
-    box-shadow: inset 0 -3px #ffffff;
+    /* background-color: #00ffff; */
+    /* box-shadow: inset 0 -3px #ffffff; */
+    color: @accent;
 }
 
 #workspaces button.urgent {
@@ -86,10 +99,10 @@ button:hover {
     background-color: @urgent;
 }
 
-#workspaces button.active {
-    color: @accent;
-    background-color: @background-alt;
-}
+/* #workspaces button.active { */
+/*     color: @accent; */
+/*     background-color: @background-alt; */
+/* } */
 
 #mode {
     background-color: #64727D;
@@ -104,6 +117,7 @@ button:hover {
 #temperature,
 #backlight,
 #network,
+#custom-notification,
 #pulseaudio,
 #wireplumber,
 #custom-media,
@@ -130,16 +144,6 @@ button:hover {
 /* If workspaces is the rightmost module, omit right margin */
 .modules-right > widget:last-child > #workspaces {
     margin-right: 0;
-}
-
-.modules-right {
-  margin-right: 5px;
-}
-
-#clock {
-    background-color: @background-alt;
-    margin-top: 5px;
-    margin-bottom: 5px;
 }
 
 #battery {
@@ -171,23 +175,18 @@ button:hover {
 }
 
 #power-profiles-daemon {
-    padding-right: 12px;
-    margin-top: 5px;
-    margin-bottom: 5px;
+  font-size: 18px;
 }
 
 #power-profiles-daemon.performance {
-    background-color: @background-alt;
     color: #f53c3c;
 }
 
 #power-profiles-daemon.balanced {
-    background-color: @background-alt;
     color: #2980b9;
 }
 
 #power-profiles-daemon.power-saver {
-    background-color: @background-alt;
     color: #2ecc71;
 }
 
@@ -213,18 +212,22 @@ label:focus {
 }
 
 #network {
-    background-color: #2980b9;
+    /* background-color: @background-alt; */
+    color: @ok-status;
+    padding-right: 12px;
 }
 
 #network.disconnected {
     background-color: #f53c3c;
 }
 
+#custom-notification {
+  background-color: @background-alt;
+}
+
 #pulseaudio {
-    background-color: @background-alt;
+    /* background-color: @background-alt; */
     color: #f1c40f;
-    margin-top: 5px;
-    margin-bottom: 5px;
 }
 
 #pulseaudio.muted {
@@ -241,18 +244,26 @@ label:focus {
     background-color: #f53c3c;
 }
 
-#custom-media {
-    background-color: #66cc99;
-    color: #2a5c45;
-    min-width: 100px;
+#custom-mpris {
+  padding: 4px;
+  transition: opacity 0.2s ease;
 }
 
-#custom-media.custom-spotify {
-    background-color: #66cc99;
+#custom-mpris.playing {
+  color: @ok-status;
+  text-shadow: 0 0 6px rgba(166, 227, 161, 0.5);
+  transition: all 0.3s ease-in-out;
 }
 
-#custom-media.custom-vlc {
-    background-color: #ffa000;
+#custom-mpris.paused {
+  color: #fff44f;
+  opacity: 0.7;
+  transition: all 0.3s ease-in-out;
+}
+
+#custom-mpris.stopped {
+  color: #ff0000;
+  opacity: 0.5;
 }
 
 #temperature {
@@ -263,11 +274,8 @@ label:focus {
     background-color: #eb4d4b;
 }
 
-#tray {
-    background-color: @background-alt;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    /* background-color: #2980b9; */
+#tray :hover{
+    background-color: transparent;
 }
 
 #tray > .passive {
@@ -279,15 +287,8 @@ label:focus {
     background-color: #eb4d4b;
 }
 
-#idle_inhibitor {
-    background-color: @background-alt;
-    margin-top: 5px;
-    margin-bottom: 5px;
-}
-
 #idle_inhibitor.activated {
-    background-color: @accent;
-    color: @text;
+    color: #ff0000;
 }
 
 #mpd {
@@ -308,11 +309,7 @@ label:focus {
 }
 
 #language {
-    background: #00b093;
-    color: #740864;
-    padding: 0 5px;
-    margin: 0 5px;
-    min-width: 16px;
+    color: #fff;
 }
 
 #keyboard-state {
@@ -349,25 +346,34 @@ label:focus {
 }
 
 #privacy-item.screenshare {
-    background-color: #cf5700;
+    color: #cf5700;
 }
 
 #privacy-item.audio-in {
-    background-color: #1ca000;
+    color: #1ca000;
 }
 
 #privacy-item.audio-out {
-    background-color: #0069d4;
+    color: #0069d4;
 }
 
 #custom-power {
-    background-color: @background-alt;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    min-width: 30px;
+    background-color: @urgent;
+    min-width: 33px;
 }
 
 #custom-power:hover {
     background-color: #ff0000;
+}
+
+menu {
+    border-radius: 1px;
+    border-color: @accent-alt;
+    background: @background;
+    color: @text;
+}
+menuitem {
+    border-radius: 1px;
+    color: @text;
 }
 

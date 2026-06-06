@@ -1,15 +1,16 @@
 ﻿## Source from conf.d before our fish config
-source /usr/share/cachyos-fish-config/conf.d/done.fish
+#source /usr/share/cachyos-fish-config/conf.d/done.fish
 
+export EDITOR=nvim
 
 ## Set values
 ## Run fastfetch as welcome message
 function fish_greeting
-	##fastfetch
+    # fastfetch
 end
 
 # Format man pages
-set -x MANROFFOPT "-c"
+set -x MANROFFOPT -c
 set -x MANPAGER "sh -c 'col -bx | bat -l man -p'"
 
 # Set settings for https://github.com/franciscolourenco/done
@@ -19,7 +20,7 @@ set -U __done_notification_urgency_level low
 ## Environment setup
 # Apply .profile: use this to put fish compatible .profile stuff in
 if test -f ~/.fish_profile
-  source ~/.fish_profile
+    source ~/.fish_profile
 end
 
 # Add ~/.local/bin to PATH
@@ -36,34 +37,35 @@ if test -d ~/Applications/depot_tools
     end
 end
 
-
 ## Functions
 # Functions needed for !! and !$ https://github.com/oh-my-fish/plugin-bang-bang
 function __history_previous_command
-  switch (commandline -t)
-  case "!"
-    commandline -t $history[1]; commandline -f repaint
-  case "*"
-    commandline -i !
-  end
+    switch (commandline -t)
+        case "!"
+            commandline -t $history[1]
+            commandline -f repaint
+        case "*"
+            commandline -i !
+    end
 end
 
 function __history_previous_command_arguments
-  switch (commandline -t)
-  case "!"
-    commandline -t ""
-    commandline -f history-token-search-backward
-  case "*"
-    commandline -i '$'
-  end
+    switch (commandline -t)
+        case "!"
+            commandline -t ""
+            commandline -f history-token-search-backward
+        case "*"
+            commandline -i '$'
+    end
 end
 
-if [ "$fish_key_bindings" = fish_vi_key_bindings ];
-  bind -Minsert ! __history_previous_command
-  bind -Minsert '$' __history_previous_command_arguments
+if [ "$fish_key_bindings" = fish_vi_key_bindings ]
+
+    bind -Minsert ! __history_previous_command
+    bind -Minsert '$' __history_previous_command_arguments
 else
-  bind ! __history_previous_command
-  bind '$' __history_previous_command_arguments
+    bind ! __history_previous_command
+    bind '$' __history_previous_command_arguments
 end
 
 # Fish command history
@@ -88,16 +90,16 @@ function copy
 end
 
 function fish_prompt
-    # Se estiver em venv, mostra o nome dele como prefixo
-    if set -q VIRTUAL_ENV
-        set venv_name (basename "$VIRTUAL_ENV")
-        set_color '#A7F432' # verde claro para destacar
-        echo -n "($venv_name) "
-        set_color normal
-    end
-
     # Pega o diretório atual e substitui /home/usuario -> ~
     set cwd (pwd | string replace -r "^$HOME" "~")
+
+    if set -q VIRTUAL_ENV
+        set pyver (python --version | string replace "Python " "")
+
+        set_color '#42be65'
+        echo -n " $pyver "
+        set_color normal
+    end
 
     # Diretório com fundo cinza escuro e texto azul claro
     set_color -b '#252525' '#33B1FF'
@@ -110,16 +112,13 @@ function fish_prompt
     set_color normal
 end
 
-
-
-
 ## Useful aliases
 # Replace ls with eza
 alias ls='eza -al --color=always --group-directories-first --icons' # preferred listing
-alias la='eza -a --color=always --group-directories-first --icons'  # all files and dirs
-alias ll='eza -l --color=always --group-directories-first --icons'  # long format
+alias la='eza -a --color=always --group-directories-first --icons' # all files and dirs
+alias ll='eza -l --color=always --group-directories-first --icons' # long format
 alias lt='eza -aT --color=always --group-directories-first --icons' # tree listing
-alias l.="eza -a | grep -e '^\.'"                                     # show only dotfiles
+alias l.="eza -a | grep -e '^\.'" # show only dotfiles
 
 # Common use
 alias grubup='sudo grub-mkconfig -o /boot/grub/grub.cfg'
@@ -135,15 +134,18 @@ alias ....='cd ../../..'
 alias .....='cd ../../../..'
 alias ......='cd ../../../../..'
 alias dir='dir --color=auto'
-alias vdir='vdir --color=auto'
+#alias vdir='vdir --color=auto'
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
-alias hw='hwinfo --short'                                   # Hardware Info
-alias big="expac -H M '%m\t%n' | sort -h | nl"              # Sort installed packages according to size in MB
-alias gitpkg='pacman -Q | grep -i "\-git" | wc -l'          # List amount of -git packages
+alias hw='hwinfo --short' # Hardware Info
+alias big="expac -H M '%m\t%n' | sort -h | nl" # Sort installed packages according to size in MB
+alias gitpkg='pacman -Q | grep -i "\-git" | wc -l' # List amount of -git packages
 alias update='sudo pacman -Syu'
 alias zed='zeditor'
+alias niricfg='nvim ~/.config/niri/'
+alias barcfg='nvim ~/.config/waybar/'
+alias ascii='toilet -f .local/share/figlet/pagga_clean.tlf'
 
 # Get fastest mirrors
 alias mirror='sudo cachyos-rate-mirrors'
@@ -168,16 +170,18 @@ alias temp-server='/home/meki/scripts/temp-server.sh'
 alias depo='/home/meki/scripts/deploy.sh'
 
 # Connect via ssh to vps
-alias vps='ssh vps'
+alias vps='ssh root@89.167.94.141'
 
 zoxide init fish | source
 
 # Yazi wrapper to auto CD into the current direcotory
 function y
-	set tmp (mktemp -t "yazi-cwd.XXXXXX")
-	yazi $argv --cwd-file="$tmp"
-	if read -z cwd < "$tmp"; and [ -n "$cwd" ]; and [ "$cwd" != "$PWD" ]
-		builtin cd -- "$cwd"
-	end
-	rm -f -- "$tmp"
+    set tmp (mktemp -t "yazi-cwd.XXXXXX")
+    yazi $argv --cwd-file="$tmp"
+    if read -z cwd <"$tmp"; and [ -n "$cwd" ]; and [ "$cwd" != "$PWD" ]
+        builtin cd -- "$cwd"
+    end
+    rm -f -- "$tmp"
 end
+
+fish_add_path /home/meki/.spicetify

@@ -1,0 +1,120 @@
+//
+// █ █ ▀█▀ █▀█ █▀▄ █▀█ █ █   █▀▄ █ █ █   █▀▀ █▀▀
+// █▄█  █  █ █ █ █ █ █ █▄█   █▀▄ █ █ █   █▀▀ ▀▀█
+// ▀ ▀ ▀▀▀ ▀ ▀ ▀▀  ▀▀▀ ▀ ▀   ▀ ▀ ▀▀▀ ▀▀▀ ▀▀▀ ▀▀▀
+// Window rules let you adjust behavior for individual windows.
+// https://niri-wm.github.io/niri/Configuration:-Window-Rules
+//
+// Example: block out two password managers from screen capture.
+// (This example rule is commented out with a "/-" in front.)
+//
+/-window-rule {
+    match app-id=r#"^org\.keepassxc\.KeePassXC$"#
+    match app-id=r#"^org\.gnome\.World\.Secrets$"#
+
+    block-out-from "screen-capture"
+
+    // Use this instead if you want them visible on third-party screenshot tools.
+    // block-out-from "screencast"
+}
+
+// 
+// Example: enable rounded corners for all windows.
+// (This example rule is commented out with a "/-" in front.)
+//
+/-window-rule {
+    geometry-corner-radius 12
+    clip-to-geometry true
+}
+
+//
+// Open the Firefox picture-in-picture player as floating by default.
+//
+window-rule {
+    // This app-id regular expression will work for both:
+    // - host Firefox (app-id is "firefox")
+    // - Flatpak Firefox (app-id is "org.mozilla.firefox")
+    match app-id=r#"firefox$"# title="^Picture-in-Picture$"
+    open-floating true
+}
+
+//
+// Kitty with --class floating-term always opens as a floating window
+//
+window-rule {
+  match app-id="floating-term"
+  open-floating true
+  default-column-width { proportion 0.50; }
+  default-window-height { proportion 0.50; }
+  open-focused true
+  border {
+    on
+    width 1
+    active-color "#ee5396"
+    inactive-color "#ff5555"
+  }
+}
+
+//
+// Kitty with --class clipse-floating always opens as a floating window
+//
+window-rule {
+  match app-id="clipse-floating"
+  open-floating true
+  default-column-width { fixed 700; }
+  default-window-height { fixed 750; }
+  open-focused true
+  border {
+    on
+    width 1
+    active-color "#ee5396"
+    inactive-color "#ff5555"
+  }
+}
+
+//
+// XDG Desktop Portal dialogs and Thunar rename window always open floating
+//
+window-rule {
+    match app-id=r#"^org\.freedesktop\.impl\.portal\.desktop\.kde$"#
+    match app-id=r#"^org\.freedesktop\.impl\.portal\.desktop\.gtk$"#
+    match app-id="thunar" title="^Rename"
+    match app-id="thunar" title="File Operation Progress"
+
+    open-floating true
+}
+
+//
+// Start steam games fullscreen
+//
+window-rule { 
+    match app-id=r#"steam_app_\d+"#
+    open-fullscreen true
+}
+
+window-rule {
+  match app-id="btop"
+  open-floating true
+}
+
+window-rule {
+  match app-id="feh"
+  open-floating true
+  default-column-width { fixed 800; }
+  default-window-height { fixed 600; }
+  open-focused true
+}
+
+window-rule {
+  match app-id="cliphist-picker"
+  open-floating true
+  default-column-width { fixed 680; }
+  default-window-height { fixed 520; }
+  open-focused true
+  border {
+    on
+    width 1
+    active-color "#ee5396"
+    inactive-color "#ff5555"
+  }
+}

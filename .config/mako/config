@@ -1,0 +1,35 @@
+# [ GLOBAL CONFIGS ]
+default-timeout=3000
+sort=-time
+layer=overlay
+font=RobotoMono Nerd Font 12
+anchor=top-right
+on-notify=exec mpv /usr/share/sounds/freedesktop/stereo/message.oga
+
+# [ COLORS ]
+border-color=#ee5396
+background-color=#161616
+
+
+# [ NORMAL VOLUME ]
+[app-name=wp-vol category=volume]
+anchor=top-center
+font=RobotoMono Nerd Font 11
+margin=50,0,0,0
+progress-color=#33b1ff
+height=35
+padding=0,5
+text-color=#000000
+text-alignment=center
+
+
+# [ MUTED ]
+[app-name=wp-vol category=muted]
+anchor=top-center
+font=RobotoMono Nerd Font Bold 11
+margin=50,0,0,0
+text-color=#ff5555
+border-color=#ff5555
+height=35
+padding=0,5
+text-alignment=center

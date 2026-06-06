@@ -7,35 +7,37 @@
     "spacing": 4, // Gaps between modules (4px)
     // Choose the order of the modules
     "modules-left": [
-        "hyprland/workspaces",
-        "hyprland/submap",
-        "sway/scratchpad",
-        "custom/media"
+        "niri/workspaces",
+        //"mpris"
+        "custom/mpris"
     ],
     "modules-center": [
-        //"hyprland/window"
-        "clock"
+        "custom/pacman",
+        "clock",
+        "custom/weather",
+        "privacy"
     ],
     "modules-right": [
         //"mpd",
+        "niri/language",
+        "keyboard-state",
         "idle_inhibitor",
+        "custom/notification",
         "pulseaudio",
-        //"network",
+        "network",
         "power-profiles-daemon",
         //"cpu",
         //"memory",
         //"temperature",
         "backlight",
-        "keyboard-state",
-        "sway/language",
-        "battery",
+        //"sway/language",
+        "betweenattery",
         "battery#bat2",
-        //"clock",
         "tray",
         "custom/power"
     ],
     // Modules configuration
-    // "hyprland/workspaces": {
+    // "niri/workspaces": {
     //     "disable-scroll": true,
     //     "all-outputs": true,
     //     "warp-on-scroll": false,
@@ -108,19 +110,27 @@
         "spacing": 10
     },
     "clock": {
-        "timezone": "America/Brasilia",
-        "format": "{:%d/%m/%y | %A | %R}",
-        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><big>{calendar}</big></tt>",
-        "on-click": "/usr/bin/kitty -e /usr/bin/fish -c /usr/bin/calcurse",
-        "calendar": {
-            "mode": "month",
-            "format": {
-                "months": "<span color='#ff6699'><b>{}</b></span>",
-                "days": "<span color='#cdd6f4'><b>{}</b></span>",
-                "weekdays": "<span color='#7CD37C'><b>{}</b></span>",
-                "today": "<span color='#ffcc66'><b>{}</b></span>"
-            }
-        }
+      "timezone": "America/Brasilia",
+      "format": "{:%d/%m/%y | %A | %R}",
+      "tooltip-format": "<tt><small>{calendar}</small></tt>",
+      "calendar": {
+          "mode": "month", // or "year"
+          "mode-mon-col": 3,
+          "weeks-pos": "none",
+          "on-scroll": 1,
+          "format": {
+              "months":   "<span color='#ffead3'><b>{}</b></span>",
+              "days":     "<span size='14000' color='#ecc6d9'><b>{}</b></span>",
+              "weekdays": "<span color='#ffcc66'><b>{}</b></span>",
+              "today":    "<span color='#ff6699'><b>{}</b></span>"
+          }
+      },
+      "actions": {
+          "on-click-right": "mode",
+          "on-scroll-up": "shift_down",
+          "on-scroll-down": "shift_up"
+      },
+      "on-click": "kitty --class floating-term sh -c 'nvim ~/todo.md'"
     },
     "cpu": {
         "format": "{usage}% ",
@@ -172,13 +182,13 @@
       }
     },
     "network": {
-        // "interface": "wlp2*", // (Optional) To force the use of this interface
-        "format-wifi": "{essid} ({signalStrength}%) ",
-        "format-ethernet": "{ipaddr}/{cidr} ",
-        "tooltip-format": "{ifname} via {gwaddr} ",
-        "format-linked": "{ifname} (No IP) ",
-        "format-disconnected": "Disconnected ⚠",
-        "format-alt": "{ifname}: {ipaddr}/{cidr}"
+        "format-wifi": "",
+        "format-ethernet": "󰈀",
+        "format-linked": "",
+        "format-disconnected": "",
+        "tooltip": false,
+        "tooltip-format": "",
+        "on-click": "kitty --class floating-term -e impala"
     },
     "pulseaudio": {
         // "scroll-step": 1, // %, can be a float
@@ -197,29 +207,104 @@
             "car": "",
             "default": ["", "", ""]
         },
-        "on-click": "pavucontrol"
+        "on-click": "kitty --class floating-term -e wiremix"
     },
-    "custom/media": {
-        "format": "{icon} {}",
+    "mpris": {
+      "format": "{status_icon} {dynamic}",
+      "dynamic-len": 40,
+      "dynamic-order": ["title", "artist"],
+      "dynamic-importance-order": ["title", "artist", "album", "position", "length"],
+      "format-paused": "{status_icon} <i>{dynamic}</i>",
+      "interval": 1,
+      "max-length": 80,
+      "player-icons": {
+        "mpv": "🎵"
+      },
+      "status-icons": {
+        "playing": " ",
+        "paused": " 󰏤"
+      },
+      // "ignored-players": ["firefox"]
+    },
+    "custom/mpris": {
+        "exec": "~/.config/waybar/scripts/mpris-scroll.sh",
         "return-type": "json",
-        "max-length": 40,
-        "format-icons": {
-            "spotify": "",
-            "default": "🎜"
-        },
-        "escape": true,
-        "exec": "$HOME/.config/waybar/mediaplayer.py 2> /dev/null" // Script in resources folder
-        // "exec": "$HOME/.config/waybar/mediaplayer.py --player spotify 2> /dev/null" // Filter player based on name
+        "interval": 1,
+        "on-click": "playerctl play-pause",
+        "on-scroll-up": "playerctl next",
+        "on-scroll-down": "playerctl previous"
     },
     "custom/check_packages": {
         "format": " Test ",
 	      "tooltip": true,
         "tooltip-format": "Packages to update!"
     },
+    "custom/notification": {
+      "tooltip": true,
+      "format": "<span size='12pt'>{icon}</span>",
+      "format-icons": {
+        "notification": "󱅫",
+        "none": "󰂜",
+        "dnd-notification": "󰂠",
+        "dnd-none": "󰪓",
+        "inhibited-notification": "󰂛",
+        "inhibited-none": "󰪑",
+        "dnd-inhibited-notification": "󰂛",
+        "dnd-inhibited-none": "󰪑"
+      },
+      "return-type": "json",
+      "exec-if": "which swaync-client",
+      "exec": "swaync-client -swb",
+      "on-click": "swaync-client -t -sw",
+      "on-click-right": "swaync-client -d -sw",
+      "escape": true
+    },
+    "custom/pacman": {
+      "format": "   {} ",
+      "interval": "once",
+      "exec": "checkupdates | wc -l",
+      "on-click": "kitty --class floating-term sh -c '~/.config/waybar/scripts/update-system.sh'",
+      "signal": 8
+    },
+    "custom/weather": {
+      "exec": "~/.config/waybar/scripts/get_weather.sh",
+      "return-type": "json",
+      "format": " {} ",
+      "tooltip": true,
+      "interval": 3600
+    },
     "custom/power": {
-        "format": "",
-        "tooltip": false,
-        "on-click": "rofi -show p -modi p:rofi-power-menu"
-    }
-  }
+      "format" : "⏻",
+          "tooltip": false,
+          "menu": "on-click",
+          "menu-file": "~/.config/waybar/power_menu.xml",
+          "menu-actions": {
+              "shutdown": "shutdown now",
+              "reboot": "reboot",
+              "suspend": "systemctl suspend",
+              "hibernate": "systemctl hibernate",
+          },
+    },
+    "niri/language": {
+      "format": "{short} {variant}",
+    },
+    "privacy": {
+      "icon-spacing": 4,
+      "icon-size": 18,
+      "transition-duration": 250,
+      "modules": [
+        {
+          "type": "screenshare",
+          "tooltip": true,
+          "tooltip-icon-size": 24
+        },
+      ],
+      "ignore-monitor": true,
+      "ignore": [
+        {
+          "type": "audio-in",
+          "name": "cava"
+        }
+      ]
+    },
 }

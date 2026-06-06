@@ -1,0 +1,23 @@
+#!/bin/sh
+
+volume_info=$(wpctl get-volume @DEFAULT_AUDIO_SINK@)
+
+if [[ "$volume_info" == *"[MUTED]" ]]; then
+  notify-send \
+    -a "wp-vol" \
+    -c "muted" \
+    -h string:x-canonical-private-synchronous:volume \
+    "󰖁"
+
+  exit 0
+fi
+
+volume=$(echo "$volume_info" | awk '{print $2}')
+volume=$(echo "$volume * 100 / 1" | bc)
+
+notify-send \
+  -a "wp-vol" \
+  -c "volume" \
+  -h string:x-canonical-private-synchronous:volume \
+  -h int:value:$volume \
+  ""
