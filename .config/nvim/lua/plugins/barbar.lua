@@ -1,0 +1,25 @@
+return {
+  "romgrk/barbar.nvim",
+
+  dependencies = {
+    "lewis6991/gitsigns.nvim",
+    "nvim-tree/nvim-web-devicons",
+  },
+
+  init = function()
+    vim.g.barbar_auto_setup = false
+  end,
+
+  opts = {
+    animation = false,
+    auto_hide = false,
+    tabpages = false,
+    clickable = true,
+
+    sidebar_filetypes = {
+      NvimTree = true,
+    },
+
+    completion.list.selection = { preselect = true, auto_insert = false }
+  },
+}

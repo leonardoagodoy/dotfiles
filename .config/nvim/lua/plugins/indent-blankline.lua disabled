@@ -1,0 +1,34 @@
+return {
+  "lukas-reineke/indent-blankline.nvim",
+  main = "ibl",
+
+  event = "VeryLazy",
+
+  config = function()
+    local ibl = require("ibl")
+    local hooks = require("ibl.hooks")
+
+    hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
+      vim.api.nvim_set_hl(0, "IblIndent", {
+        fg = "#3b4261",
+      })
+
+      vim.api.nvim_set_hl(0, "IblScope", {
+        fg = "#7aa2f7",
+        bold = true,
+      })
+    end)
+
+    ibl.setup({
+      indent = {
+        char = "▏",
+        highlight = "IblIndent",
+      },
+
+      scope = {
+        enabled = true,
+        highlight = "IblScope",
+      },
+    })
+  end,
+}
