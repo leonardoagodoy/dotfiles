@@ -19,7 +19,5 @@ return {
     sidebar_filetypes = {
       NvimTree = true,
     },
-
-    completion.list.selection = { preselect = true, auto_insert = false }
   },
 }
